@@ -1,0 +1,1 @@
+# icruiting-poc-appl-structure
