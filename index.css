@@ -1,3 +1,123 @@
+@import url("https://fonts.cdnfonts.com/css/dm-sans");
+
+:root {
+  --primary: #4c779a;
+  --n900: #0f172a;
+  --n600: #475569;
+  --n500: #64748b;
+  --n300: #cbd5e1;
+  --n200: #e2e8f0;
+  --n100: #f1f5f9;
+}
+
+/* Base */
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 body {
-  background: darkcyan;
+  font-family: "DM Sans", sans-serif;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.75px;
+  color: var(--n900);
+}
+
+/* Layout */
+main {
+  display: flex;
+  gap: 64px;
+  padding: 64px;
+}
+
+section {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 12px;
+}
+
+form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 12px;
+}
+
+b {
+  font-weight: 700;
+}
+
+/* Components */
+table {
+  border: 1px solid var(--n300);
+  border-radius: 4px;
+  border-spacing: 0;
+}
+
+table th {
+  min-width: 232px;
+  text-align: left;
+  background: var(--n200);
+}
+
+table tr:nth-child(even) {
+  background: var(--n100);
+}
+
+table td,
+table th {
+  padding: 0;
+  text-align: left;
+  padding: 4px 8px;
+  gap: 8px;
+  border-bottom: 1px solid var(--n300);
+  border-right: 1px solid var(--n300);
+}
+table tr:last-child > td {
+  border-bottom: none;
+}
+
+table tr > td:last-child,
+table tr > th:last-child {
+  border-right: none;
+}
+
+input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 4px 12px;
+
+  border: 1px solid var(--n200);
+  border-radius: 4px;
+}
+
+::placeholder {
+  color: var(--n500);
+}
+
+::-ms-input-placeholder {
+  color: var(--n500);
+}
+
+:-ms-input-placeholder {
+  color: var(--n500);
+}
+
+button {
+  padding: 4px 12px;
+  background: var(--primary);
+  border-radius: 4px;
+  border: none;
+  color: white;
+  font-weight: 700;
+  align-self: flex-start;
 }
