@@ -1,13 +1,30 @@
-const applicantStructure = {
-  g5c7470c: { type: "string", name: "fullname" },
-  fb9484cf: { type: "number", name: "age" },
-  fb9484cf: { type: "string", name: "age" },
+const createApplicant = (props = {}) => {
+  const applicantStructure = {
+    g5c7470c: { type: "string" }, // fullname
+    fb9484cf: { type: "number" }, // age
+  };
+
+  const appl = Object.entries(applicantStructure).reduce(
+    (acc, [key, value]) => {
+      if (!props[key]) return;
+      if (typeof props[key] != value.type) {
+        if (value.type == "number" && Number(props[key]) != NaN) {
+          props[key] = Number(props[key]);
+        } else throw new Error("Incorrect Data Type");
+      }
+      acc[key] = props[key];
+      return acc;
+    },
+    {}
+  );
+
+  return appl;
 };
 
 const formView = [
-  { element: "g5c7470c", component: "input", placeholder: "What's your name?" },
+  { name: "g5c7470c", component: "input", placeholder: "What's your name?" },
   {
-    element: "fb9484cf",
+    name: "fb9484cf",
     component: "input",
     type: "number",
     placeholder: "How old are you?",
@@ -19,8 +36,6 @@ const tableView = [
   { element: "fb9484cf", type: "number", header: "Age" },
 ];
 
-const applicants = [{ g5c7470c: "Herbert Buchner", fb9484cf: 32 }];
-
 const createComponent = (component, props = {}) => {
   const elem = document.createElement(component);
   Object.entries(props).forEach(([key, value]) => {
@@ -29,17 +44,27 @@ const createComponent = (component, props = {}) => {
   return elem;
 };
 
+const form = document.getElementsByTagName("form")[0];
 const generateFormView = () => {
-  const form = document.getElementsByTagName("form")[0];
   formView.reverse().forEach(({ component, ...props }) => {
     form.insertBefore(createComponent(component, props), form.firstChild);
   });
 };
 
+const insertApplicant = (tbody, applicant) => {
+  const tr = createComponent("tr");
+  tableView.forEach((column) => {
+    const td = createComponent("td");
+    td.textContent = applicant[column.element];
+    tr.appendChild(td);
+  });
+  tbody.appendChild(tr);
+};
+
+const tbody = document.getElementsByTagName("tbody")[0];
 const generateTableView = () => {
   const thead = document.getElementsByTagName("thead")[0];
   const theadRow = thead.getElementsByTagName("tr")[0];
-  const tbody = document.getElementsByTagName("tbody")[0];
 
   const icons = {
     string: "./assets/text_fields.svg",
@@ -55,16 +80,26 @@ const generateTableView = () => {
     th.insertBefore(img, th.firstChild);
   });
 
-  applicants.forEach((row) => {
-    const tr = createComponent("tr");
-    tableView.forEach((column) => {
-      const td = createComponent("td");
-      td.textContent = row[column.element];
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
+  applicants.forEach((appl) => {
+    insertApplicant(tbody, appl);
   });
 };
+
+const handleFormSubmnission = (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const data = [...formData].reduce((acc, [key, value]) => {
+    acc[key] = value;
+    return acc;
+  }, {});
+
+  const applicant = createApplicant(data);
+  insertApplicant(tbody, applicant);
+
+  event.target.reset();
+};
+
+form.addEventListener("submit", handleFormSubmnission);
 
 generateFormView();
 generateTableView();
