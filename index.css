@@ -68,6 +68,10 @@ table th {
   background: var(--n200);
 }
 
+table th > img {
+  margin-right: 8px;
+}
+
 table tr:nth-child(even) {
   background: var(--n100);
 }
